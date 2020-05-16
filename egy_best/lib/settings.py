@@ -1,11 +1,11 @@
-from Exceptions import BotDetectedException
-from secrets import my_headers
 import requests
+from fake_headers import Headers
+from .exceptions import BotDetectedException
 
 class Settings:
 	""" main settings stored in this class """
 	site = 'https://egy.best'
-	headers = my_headers
+	headers = Headers('chrome', 'win').generate()
 	proxy = None
 
 	@classmethod
