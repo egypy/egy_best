@@ -1,9 +1,8 @@
-from lib.utils import Utils
-class Material:
+from page import Page
+class Material(Page):
 	""" class to handle movies, series and other Materiales """
 	def __init__(self, link):
-		self.link = link
-		self.soup = Utils.page_downloader(link)
+		super().__init__(link)
 		self.thumbnail = self.thumbnail_scrape()['thumbnail']
 		self.language = None
 		self.classing = None
@@ -11,7 +10,7 @@ class Material:
 		self.rating = None
 		self.rating_percent = None
 
-	def thumbnail_scrape(self) -> dict:
+	def get_thumbnail_info(self) -> dict:
 		""" scrape thumbnail for useful informations """
 		content = dict()
 		r = self.soup.find(class_='movie_img')
@@ -29,7 +28,7 @@ class Material:
 		)
 		return content
 
-	def movie_table_scrape(self):
+	def get_table_info(self):
 		""" scrape movie table for useful informations """
 		childs = self.soup.find(class_='movieTable full').find_all('td')
 		content = dict()
