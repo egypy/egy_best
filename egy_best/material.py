@@ -28,3 +28,18 @@ class Material:
 			)
 		)
 		return content
+
+	def movie_table_scrape(self):
+		""" scrape movie table for useful informations """
+		childs = self.soup.find(class_='movieTable full').find_all('td')
+		content = dict()
+		for tag, child in zip(childs[1::2], childs[2::2]):
+			tag_text = tag.text.split('•')
+			child_text = child.text.split('•')
+			if len(tag_text) != len(child_text):
+				content.update({tag.text.strip():[text.strip()
+					for text in child_text]})
+			else:
+				content.update({tag.strip():child.strip()
+					for tag, child in zip(tag_text, child_text)})
+		return content
