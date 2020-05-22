@@ -15,6 +15,9 @@ class Translator:
 		'المسلسل': 'serie',
 		'تقييم المسلسل': 'serie_rating',
 		'القصة': 'story',
+		'الدقة': 'accuracy',
+		'الحجم': 'size',
+		'التحميل': 'download'
 	}
 
 	@classmethod
