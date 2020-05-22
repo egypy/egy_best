@@ -5,9 +5,9 @@ class Material(Page):
 	def __init__(self, link):
 		super().__init__(link)
 		self.thumbnail = self.get_thumbnail_info()['thumbnail']
+		self.rating_percent = self.soup.find(class_='cpnt').text
 		for name, value in self.get_table_info().items():
 			setattr(self, name, value)
-		self.rating_percent = self.soup.find(class_='cpnt').text
 
 	def get_thumbnail_info(self) -> dict:
 		""" scrape thumbnail for useful informations """
@@ -41,3 +41,39 @@ class Material(Page):
 				content.update({Translator.translate(tag.strip()):child.strip()
 					for tag, child in zip(tag_text, child_text)})
 		return content
+
+	def get_story(self):
+		"""find story, only for movie and serie classes """
+		r = self.soup.find(
+			text=Translator.translate('story', reverse=True)
+			).findNext('div')
+		return r.text.replace(r.strong.text, '')
+
+	def get_actors(self):
+		""" get actors and thire info from a material page """
+		content = dict()
+		container = self.soup.find(class_='rs_scroll pdt pdr')
+		i = int()
+		for actor in container.find_all(class_='cast_item'):
+			i += 1
+			for elem in actor.find_all(class_='td vam'):
+				if elem.a.img:
+					content.update({
+					i:dict(
+						name=elem.img['alt'],
+						image=elem.img['src'],
+						)
+					})
+				else:
+					role = elem.span
+					content[i].update(dict(
+						role=role.text.replace('...', ''),
+						appearance=role['title'].split('  ')[-1]
+							if self.page_type in ['series', 'season'] else None
+						)
+					)
+		return content
+
+	def get_thriller(self):
+		""" scrape youtube thriller from the website """
+		return self.soup.find(class_='play p api')['url']
