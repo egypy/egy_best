@@ -41,6 +41,3 @@ class Material(Page):
 				content.update({Translator.translate(tag.strip()):child.strip()
 					for tag, child in zip(tag_text, child_text)})
 		return content
-
-m = Material('https://room.egybest.name/movie/inheritance-2020/?ref=home-new')
-print(m.rating_percent)
