@@ -47,7 +47,7 @@ class Material(Page):
 		r = self.soup.find(
 			text=Translator.translate('story', reverse=True)
 			).findNext('div')
-		return r.text.replace(r.strong.text, '')
+		return r.text.replace(r.strong.text, '') if r.strong else r.text
 
 	def get_actors(self):
 		""" get actors and thire info from a material page """
@@ -73,6 +73,21 @@ class Material(Page):
 						)
 					)
 		return content
+
+	def get_download_info(self):
+		""" get download informations: qualities availables and a lot of info
+		"""
+		container = self.soup.find(class_='dls_table btns full mgb')
+		parents = [Translator.translate(w.text)
+			for w in container.thead.tr.find_all('th')]
+		childs = container.tbody.find_all('tr')
+		return {i:{parent: elem.a['data-url']
+		if elem.a else elem.text
+			for parent, elem in zip(
+				parents,
+				child.find_all('td'))
+				}
+			for i , child in zip(range(len(childs)), childs)}
 
 	def get_thriller(self):
 		""" scrape youtube thriller from the website """
