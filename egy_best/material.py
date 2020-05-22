@@ -1,14 +1,13 @@
 from page import Page
+from lib.translator import Translator
 class Material(Page):
 	""" class to handle movies, series and other Materiales """
 	def __init__(self, link):
 		super().__init__(link)
-		self.thumbnail = self.thumbnail_scrape()['thumbnail']
-		self.language = None
-		self.classing = None
-		self.type = None
-		self.rating = None
-		self.rating_percent = None
+		self.thumbnail = self.get_thumbnail_info()['thumbnail']
+		for name, value in self.get_table_info().items():
+			setattr(self, name, value)
+		self.rating_percent = self.soup.find(class_='cpnt').text
 
 	def get_thumbnail_info(self) -> dict:
 		""" scrape thumbnail for useful informations """
@@ -36,9 +35,12 @@ class Material(Page):
 			tag_text = tag.text.split('•')
 			child_text = child.text.split('•')
 			if len(tag_text) != len(child_text):
-				content.update({tag.text.strip():[text.strip()
+				content.update({Translator.translate(tag.text.strip()):[text.strip()
 					for text in child_text]})
 			else:
-				content.update({tag.strip():child.strip()
+				content.update({Translator.translate(tag.strip()):child.strip()
 					for tag, child in zip(tag_text, child_text)})
 		return content
+
+m = Material('https://room.egybest.name/movie/inheritance-2020/?ref=home-new')
+print(m.rating_percent)
