@@ -1,10 +1,7 @@
-A1 settings class, page downloader
-A2 search, movie, actor, serie, episode classes
+A1 settings class, page downloader # DONE
+A2 search, movie, actor, serie, episode classes # DONE
 B1 movie, episodes downloader
 B2 improve class by implanting some metaprogramming
-B3 detect page type 
-C1 bypass bot detector
+B3 detect page type # DONE
+C1 bypass bot detector # DONE
 C2 Test: test search, movie, actor, serie, episode classes
-C Demo : simple demo to show how you package works
-C Demo : simple Django web app
-C Demo : simple electron Desktop app
