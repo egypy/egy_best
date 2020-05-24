@@ -17,7 +17,8 @@ class Translator:
 		'القصة': 'story',
 		'الدقة': 'accuracy',
 		'الحجم': 'size',
-		'التحميل': 'download'
+		'التحميل': 'download',
+		'404': 'هذا الفيلم غير متاح حالياً',
 	}
 
 	@classmethod
