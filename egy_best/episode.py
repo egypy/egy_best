@@ -21,4 +21,5 @@ class Episode(Material):
 
 	def get_serie_from_episode(self):
 		order = self.find_order('ep')
-		return self.link.replace(f'-ep-{order}', '').replace('episode', 'season')
+		r = self.link.replace(f'-ep-{order}', '').replace('episode', 'season')
+		return r
