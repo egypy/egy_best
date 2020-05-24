@@ -4,7 +4,13 @@ from .settings import Settings
 # i had to sell my soul to devil due relative imports
 class Utils:
 	""" class that hold some useful utils methods"""
-
+	classes = dict(
+			movie='Movie',
+			actor='Actor',
+			series='Serie',
+			season='Season',
+			episode='Episode',
+		)
 	@classmethod
 	def page_downloader(cls, link):
 		""" download the page and return BeautifulSoup instance """
@@ -22,3 +28,23 @@ class Utils:
 		if r.path.count('/') and not r.path == '/':
 			return r.path.split('/')[1]
 		return 'home'
+
+	@classmethod
+	def magic_import(cls, name, link):
+		tampl = '{}("{}")'
+		rel = cls.classes[name]
+		code = f'from {rel.lower()} import {rel}'
+		exec(code)
+		return eval(tampl.format(rel, link))
+
+	@classmethod
+	def pickup_class(cls, link):
+		""" return a instance based on the link and config
+		"""
+		holy_marry = ['actor', 'season']
+		type = Utils.page_type(link)
+		if Settings.AUTO_INIT:
+			if type in cls.classes:
+				return cls.magic_import(type, link)
+			return cls.magic_import('page', link)
+		return link
