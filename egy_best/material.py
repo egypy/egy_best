@@ -1,5 +1,6 @@
 from page import Page
 from lib.translator import Translator
+from lib.utils import Utils
 class Material(Page):
 	""" class to handle movies, series and other Materiales """
 	def __init__(self, link):
@@ -57,11 +58,10 @@ class Material(Page):
 		for actor in container.find_all(class_='cast_item'):
 			i += 1
 			for elem in actor.find_all(class_='td vam'):
-				if elem.a.img:
+				if elem.a:
 					content.update({
 					i:dict(
-						name=elem.img['alt'],
-						image=elem.img['src'],
+						actor=Utils.pickup_class(elem.a['href']),
 						)
 					})
 				else:
@@ -77,6 +77,8 @@ class Material(Page):
 	def get_download_info(self):
 		""" get download informations: qualities availables and a lot of info
 		"""
+		if Translator.translate('404') in self.soup.text:
+			return 'No download has found'
 		container = self.soup.find(class_='dls_table btns full mgb')
 		parents = [Translator.translate(w.text)
 			for w in container.thead.tr.find_all('th')]
