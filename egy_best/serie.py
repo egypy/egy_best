@@ -1,4 +1,6 @@
 from material import Material
+from lib.utils import Utils
+
 class Serie(Material):
 	""" class for Series on egy best """
 	def __init__(self, link):
@@ -13,4 +15,5 @@ class Serie(Material):
 	def get_seasons(self):
 		""" return all seasons of a serie """
 		container = self.soup.find(class_='contents movies_small')
-		return [link['href']for link in container.find_all('a')]
+		return [Utils.pickup_class(link['href'])
+			for link in container.find_all('a')]
