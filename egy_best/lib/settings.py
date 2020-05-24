@@ -5,9 +5,16 @@ from .exceptions import BotDetectedException
 class Settings:
 	""" main settings stored in this class """
 	site = 'https://egy.best'
-	AUTO_INIT = True
+	AUTO_INIT = False # better false for speed
 	headers = Headers('chrome', 'win').generate()
 	proxy = None
+	classes = dict(
+			movie='Movie',
+			actor='Actor',
+			series='Serie',
+			season='Season',
+			episode='Episode',
+		)
 
 	@classmethod
 	def mainsite(cls) -> str:
