@@ -1,6 +1,6 @@
 from material import Material
 from lib.translator import Translator
-
+from lib.utils import Utils
 class Movie(Material):
 	""" a movie class to handle movies """
 	def __init__(self, link):
@@ -21,4 +21,5 @@ class Movie(Material):
 	def get_similar(self):
 		""" get similar movies """
 		container = self.soup.find(class_='contents movies_small')
-		return [Movie(link['href']) for link in container.find_all('a')]
+		return [Utils.pickup_class(link['href'])
+			for link in container.find_all('a')]
