@@ -5,6 +5,7 @@ from .exceptions import BotDetectedException
 class Settings:
 	""" main settings stored in this class """
 	site = 'https://egy.best'
+	AUTO_INIT = True
 	headers = Headers('chrome', 'win').generate()
 	proxy = None
 
