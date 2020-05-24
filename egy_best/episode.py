@@ -22,7 +22,3 @@ class Episode(Material):
 	def get_serie_from_episode(self):
 		order = self.find_order('ep')
 		return self.link.replace(f'-ep-{order}', '').replace('episode', 'season')
-
-
-e = Episode('https://room.egybest.name/episode/mr-robot-season-4-ep-7/?ref=search-p1')
-print(e.episode_number)
