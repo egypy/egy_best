@@ -1,6 +1,4 @@
 from lib.utils import Utils
-from movie import Movie
-
 
 class Actor:
     def __init__(self, link):
@@ -27,6 +25,6 @@ class Actor:
             for id in range(1, max+1):
                 soup = Utils.page_downloader(f'{self.link}{categorie}?page={id}')
                 con = soup.find(class_='movies movies_small')
-                content[categorie].extend([Movie(movie['href'])
-                                           for movie in con.find_all(class_='movie')])
+                content[categorie].extend([Utils.pickup_class(movie['href'])
+                                for movie in con.find_all(class_='movie')])
         return content
