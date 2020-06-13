@@ -17,6 +17,6 @@ class Site:
 			('q', query),
 		)
 		r = requests.get(cls.search_api, params=pram, **kwargs).json()
-		return [Utils.pickup_class(tamplate.format(movie["u"]))
+		return [Utils.pickup_class(tamplate.format(movie["u"]), True)
 			for elem in r
 				for movie in r[elem]]
