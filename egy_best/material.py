@@ -1,4 +1,5 @@
 from page import Page
+from downloader import Downloader
 from lib.translator import Translator
 from lib.utils import Utils
 class Material(Page):
@@ -90,6 +91,16 @@ class Material(Page):
 				child.find_all('td'))
 				}
 			for i , child in zip(range(len(childs)), childs)}
+
+	def get_source_link(self, quality=None):
+		""" get the mp4 download link """
+		if str(quality).isnumeric():
+			self.download_info[quality]['download'] = Downloader(self.download_info[quality]['download']).get_mp4_link()
+			return self.download_info
+		for quality in self.download_info:
+			if '/api' in self.download_info[quality]['download']:
+				self.download_info[quality]['download'] = Downloader(self.download_info[quality]['download']).get_mp4_link()
+		return self.download_info
 
 	def get_thriller(self):
 		""" scrape youtube thriller from the website """
