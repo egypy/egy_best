@@ -1,4 +1,5 @@
 from page import Page
+from actor import Actor
 from downloader import Downloader
 from lib.translator import Translator
 from lib.utils import Utils
@@ -53,27 +54,18 @@ class Material(Page):
 
 	def get_actors(self):
 		""" get actors and thire info from a material page """
-		content = dict()
 		container = self.soup.find(class_='rs_scroll pdt pdr')
-		i = int()
+		content = list()
 		for actor in container.find_all(class_='cast_item'):
-			i += 1
-			for elem in actor.find_all(class_='td vam'):
-				if elem.a:
-					content.update({
-					i:dict(
-						actor=Utils.pickup_class(elem.a['href']),
-						)
-					})
-				else:
-					role = elem.span
-					content[i].update(dict(
-						role=role.text.replace('...', ''),
-						appearance=role['title'].split('  ')[-1]
-							if self.page_type in ['series', 'season'] else None
-						)
+			content.append(Actor(
+				actor.find_all(class_='td vam')[1].a['href'],
+				role=Utils.fix_actor_role(
+					actor.find_all(class_='td vam')[1].a.text,
+					actor.find_all(class_='td vam')[1].span.text,
 					)
+			))
 		return content
+
 
 	def get_download_info(self):
 		""" get download informations: qualities availables and a lot of info
