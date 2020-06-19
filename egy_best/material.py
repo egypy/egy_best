@@ -5,12 +5,20 @@ from lib.translator import Translator
 from lib.utils import Utils
 class Material(Page):
 	""" class to handle movies, series and other Materiales """
-	def __init__(self, link):
-		super().__init__(link)
-		self.thumbnail = self.get_thumbnail_info()['thumbnail']
-		self.rating_percent = self.soup.find(class_='cpnt').text
-		for name, value in self.get_table_info().items():
-			setattr(self, name, value)
+	def __init__(self, link, **kwargs):
+		super().__init__(link, **kwargs)
+		if self.access:
+			self.thumbnail = self.get_thumbnail_info()['thumbnail']
+			self.rating_percent = 'Not rated'
+			if self.soup.find(class_='cpnt'):
+				self.rating_percent = self.soup.find(class_='cpnt').text
+
+			for name, value in self.get_table_info().items():
+				if name not in ['serie']:
+					setattr(self, name, value)
+
+	def __repr__(self):
+		return self.link
 
 	def get_thumbnail_info(self) -> dict:
 		""" scrape thumbnail for useful informations """
@@ -57,12 +65,13 @@ class Material(Page):
 		container = self.soup.find(class_='rs_scroll pdt pdr')
 		content = list()
 		for actor in container.find_all(class_='cast_item'):
+			name = actor.find_all(class_='td vam')[1].a.text
 			content.append(Actor(
 				actor.find_all(class_='td vam')[1].a['href'],
 				role=Utils.fix_actor_role(
-					actor.find_all(class_='td vam')[1].a.text,
-					actor.find_all(class_='td vam')[1].span.text,
-					)
+					name,
+					actor.find_all(class_='td vam')[1].span.text),
+				name=name
 			))
 		return content
 
@@ -96,4 +105,5 @@ class Material(Page):
 
 	def get_thriller(self):
 		""" scrape youtube thriller from the website """
-		return self.soup.find(class_='play p api')['url']
+		api = self.soup.find(class_='play p api')
+		return api['url'] if api else 'Not Found'
