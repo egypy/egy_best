@@ -1,23 +1,30 @@
 from lib.utils import Utils
+from lib.settings import Settings
 
 class Actor:
-    def __init__(self, link):
+    def __init__(self, link, **kwargs):
         self.link = link
-        self.soup = Utils.page_downloader(link).find(id='mainLoad')
-        for name, value in self.scrape_image().items():
+        self.name = ' '.join(Utils.url_to_name(link)).title()
+        for name, value in kwargs.items():
             setattr(self, name, value)
-        self.total_films = self._total_films()
-        max = int(self.total_films[1]) if int(self.total_films) > 20 else 1
-        self.movies = self.scrape_movies(max)
+        if Settings.AUTO_INIT:
+            for name, value in self.scrape_image().items():
+                setattr(self, name, value)
+
+
+    def __repr__(self):
+        return self.name
+
+    @property
+    def soup(self):
+        if not hasattr(self, '_soup'):
+            self._soup = Utils.page_downloader(self.link).find(id='mainLoad')
+        return self._soup
+
 
     def scrape_image(self):
         r = self.soup.find(class_='inline vam').a.img
         return dict(image=r['src'], name=r['alt'])
-
-    def _total_films(self):
-        r = self.soup.find(text=self.name).find_parent().find_parent()
-        return ''.join([elem for elem in r.text.replace(self.name, '').split()
-                        if elem.isdigit()])
 
     def scrape_movies(self, max=1):
         content = dict(new=list(), top=list(), popular=list(), old=list())
@@ -28,3 +35,13 @@ class Actor:
                 content[categorie].extend([Utils.pickup_class(movie['href'])
                                 for movie in con.find_all(class_='movie')])
         return content
+
+    @property
+    def total_films(self):
+        r = self.soup.find(text=self.name).find_parent().find_parent()
+        return ''.join([elem for elem in r.text.replace(self.name, '').split()
+                        if elem.isdigit()])
+    @property
+    def movies(self):
+        max = int(self.total_films[1]) if int(self.total_films) > 20 else 1
+        return self.scrape_movies(max)
