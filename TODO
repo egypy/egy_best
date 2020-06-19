@@ -1,14 +1,6 @@
-A1 settings class, page downloader # DONE
-A2 search, movie, actor, serie, episode classes # DONE
-A2 reverse WIuqgE() and get ride of headless browser
-A3 shrink requests to 5 or less
-B1 movie, episodes downloader
-B2 improve class by implanting some metaprogramming
-B3 detect page type # DONE
-C1 bypass bot detector # DONE
-C2 search par year type quality ....
-C2 Test: test search, movie, actor, serie, episode classes
-remove unused methods and make more properties
-async in get_source_link
-change thread get_token to deamon x
-do 1 test in get_token instead of test * quality 
+A1 reverse WIuqgE() and get ride of headless browser
+B1 improve class by implanting some metaprogramming
+C1 Test: test search, movie, actor, serie, episode classes
+C2 remove unused methods and make more properties
+C3 async in get_source_link
+C4 do 1 test in get_token instead of test * quality 
