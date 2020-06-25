@@ -1,6 +1,7 @@
 from material import Material
 from lib.translator import Translator
 from lib.utils import Utils
+from cached_properties import Property as property
 
 class Movie(Material):
 	""" a movie class to handle movies """
@@ -9,8 +10,6 @@ class Movie(Material):
 		if self.access:
 			self.title = ' '.join(self.get_thumbnail_info()['title'].split()[0:-1:])
 			self.year = self.get_thumbnail_info()['title'].split()[-1]
-			self.story = self.get_story()
-			self.thriller = self.get_thriller()
 
 	def __str__(self):
 		return f'{self.title} ({self.year})'
@@ -34,15 +33,14 @@ class Movie(Material):
 
 	@property
 	def download_info(self):
-		if not hasattr(self, '_download_info'):
-			setattr(self, '_download_info', self.get_download_info())
-		return getattr(self, '_download_info')
-
-	@download_info.setter
-	def download_info(self, val):
-		if val:
-			setattr(self, '_download_info', val)
+		return self.get_download_info()
 
 	@property
 	def story(self):
+		""" get story """
 		return self.get_story()
+
+	@property
+	def thriller(self):
+		""" get youtube thriller link if any """
+		return self.get_thriller()
