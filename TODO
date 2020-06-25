@@ -3,4 +3,5 @@ B1 improve class by implanting some metaprogramming
 C1 Test: test search, movie, actor, serie, episode classes
 C2 remove unused methods and make more properties
 C3 async in get_source_link
-C4 do 1 test in get_token instead of test * quality 
+C4 do 1 test in get_token instead of test * quality
+C5 make settings json format
