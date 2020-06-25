@@ -1,6 +1,7 @@
 import re
 from serie import Serie
 from lib.utils import Utils
+from cached_properties import Property as property
 
 class Season(Serie):
 	def __init__(self, link, **kwargs):
@@ -13,7 +14,7 @@ class Season(Serie):
 		return [Utils.pickup_class(
 					link['href'],
 					title=link.find(class_='title').text,
-					thumbnail_image=link.img['src'],
+					thumbnail=link.img['src'],
 				)
 		 	for link in container.find_all('a')]
 
@@ -26,14 +27,8 @@ class Season(Serie):
 
 	@property
 	def serie(self):
-		if not hasattr(self, '_serie'):
-			data = self.get_serie_from_season()
-			setattr(self, '_serie', Serie(
-					link=data[0],
-					title=data[1]
-					),
-				)
-		return self._serie
+		data = self.get_serie_from_season()
+		return Serie(link=data[0], title=data[1])
 
 	@property
 	def episodes(self):
