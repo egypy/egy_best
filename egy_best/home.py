@@ -2,7 +2,6 @@ from page import Page
 from lib.utils import Utils
 from lib.translator import Translator
 class Home(Page):
-
 	def __init__(self):
 		super().__init__(Utils.make_link())
 		for name, value in self.scrape_home_page().items():
@@ -13,7 +12,7 @@ class Home(Page):
 		return [Utils.pickup_class(
 			link=item['href'],
 			title=item.find(class_='title').text,
-			thumbnail_image=item.img['src']
+			thumbnail=item.img['src']
 			)
 			for item in t.find_all('a')]
 
