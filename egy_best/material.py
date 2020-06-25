@@ -3,22 +3,19 @@ from actor import Actor
 from downloader import Downloader
 from lib.translator import Translator
 from lib.utils import Utils
+from cached_properties import Property as property
+
 class Material(Page):
 	""" class to handle movies, series and other Materiales """
 	def __init__(self, link, **kwargs):
 		super().__init__(link, **kwargs)
 		if self.access:
-			self.thumbnail = self.get_thumbnail_info()['thumbnail']
-			self.rating_percent = 'Not rated'
-			if self.soup.find(class_='cpnt'):
-				self.rating_percent = self.soup.find(class_='cpnt').text
-
 			for name, value in self.get_table_info().items():
 				if name not in ['serie']:
 					setattr(self, name, value)
 
 	def __repr__(self):
-		return self.link
+		return f'{self.__class__.__name__} at : {self.link}'
 
 	def get_thumbnail_info(self) -> dict:
 		""" scrape thumbnail for useful informations """
@@ -71,7 +68,8 @@ class Material(Page):
 				role=Utils.fix_actor_role(
 					name,
 					actor.find_all(class_='td vam')[1].span.text),
-				name=name
+				_name=name,
+				_image=actor.find_all(class_='td vam')[0].img['src']
 			))
 		return content
 
@@ -107,3 +105,13 @@ class Material(Page):
 		""" scrape youtube thriller from the website """
 		api = self.soup.find(class_='play p api')
 		return api['url'] if api else 'Not Found'
+
+	@property
+	def thumbnail(self):
+		self.get_thumbnail_info()['thumbnail']
+
+	@property
+	def rating_percent(self):
+		if self.soup.find(class_='cpnt'):
+			return self.soup.find(class_='cpnt').text
+		return 'Not rated'
