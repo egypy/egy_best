@@ -1,5 +1,6 @@
 from lib.utils import Utils
 from lib.settings import Settings
+from cached_properties import Property as property
 
 class Page:
 	""" a class to handle html pages on the site """
@@ -25,11 +26,4 @@ class Page:
 
 	@property
 	def soup(self):
-		if not hasattr(self, '_soup'):
-			self._soup = Utils.page_downloader(self.link)
-		return self._soup
-
-	@soup.setter
-	def soup(self, value):
-		if value:
-			self._soup = value
+		return Utils.page_downloader(self.link)
