@@ -2,13 +2,12 @@ import requests as reeeeeee # reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 from antibot import AntiBot
 from lib.settings import Settings
 from lib.utils import Utils
+from cached_properties import Property as property
 
 class Downloader:
 	def __init__(self, link):
 		self.link = link
 		self.api = Settings.mainsite()
-		self.egy_token = AntiBot('egy_best', True).get_token()
-		self.vid_stream = AntiBot('vid_stream', True).get_token()
 
 	def get_mp4_link(self):
 		link = f'{self.api.rstrip("/")}{self.link}'
@@ -25,3 +24,11 @@ class Downloader:
 			if r:
 				yield r.raw.read(max)
 			break
+
+	@property(timeout=3600)
+	def egy_token(self):
+		AntiBot('egy_best', True).get_token()
+
+	@property(timeout=3600)
+	def vid_stream(self):
+		AntiBot('vid_stream', True).get_token()
