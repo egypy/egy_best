@@ -1,5 +1,6 @@
 from material import Material
 from lib.utils import Utils
+from cached_properties import Property as property
 
 class Serie(Material):
 	""" class for Series on egy best """
@@ -8,8 +9,6 @@ class Serie(Material):
 		if self.access:
 			self.title = ' '.join(self.get_thumbnail_info()['title'].split()[0:-1:])
 			self.year = self.get_thumbnail_info()['title'].split()[-1]
-			self.story = self.get_story()
-			self.thriller = self.get_thriller()
 
 	def __repr__(self):
 		return f'{self.title} ({self.year})'
@@ -20,7 +19,7 @@ class Serie(Material):
 		return [Utils.pickup_class(
 				link=link['href'],
 				title=link.find(class_='title').text,
-				thumbnail_image=link.img['src']
+				thumbnail=link.img['src']
 			)
 			for link in container.find_all('a')]
 
@@ -33,3 +32,13 @@ class Serie(Material):
 	def seasons(self) -> list:
 		""" return seasons that are in the serie """
 		return self.get_seasons()
+
+	@property
+	def thriller(self):
+		""" get youtube thriller link if any """
+		return self.get_thriller()
+
+	@property
+	def story(self):
+		""" get story """
+		return self.get_story()
