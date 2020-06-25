@@ -3,15 +3,14 @@ from serie import Serie
 from season import Season
 from material import Material
 from lib.utils import Utils
+from cached_properties import Property as property
 class Episode(Material):
 	def __init__(self, link, **kwargs):
 		self.link = link
 		super().__init__(link, **kwargs)
-		if self.access:
-			for name, value in self.season.serie.__dict__.items():
-				setattr(self, name, value)
-			self.soup = Utils.page_downloader(link)
 
+	def __repr__(self):
+		return f'{self.title} Episode number : {self.episode_number}'
 
 	def find_order(self, pram):
 		return  re.search(f'{pram}-(.*)/', self.link).group(1)
@@ -23,18 +22,20 @@ class Episode(Material):
 
 	@property
 	def season(self):
-		if not hasattr(self, '_season'):
-			self._season = Season(link=self.get_serie_from_episode())
-		return self._season
+		return Season(link=self.get_serie_from_episode())
 
 	@property
 	def download_info(self):
-		if not hasattr(self, '_download_info'):
-			setattr(self, '_download_info', self.get_download_info())
-		return self._download_info
+		return self.get_download_info()
 
 	@property
 	def episode_number(self):
-		if not hasattr(self, '_episode_number'):
-			setattr(self, '_episode_number', self.find_order('ep'))
-		return self._episode_number
+		return self.find_order('ep'))
+
+	@property
+	def soup(self):
+		return Utils.page_downloader(self.link)
+
+	@property
+	def year(self):
+	return self.season.serie.year
