@@ -1,9 +1,10 @@
-from page import Page
 from lib.utils import Utils
 from lib.translator import Translator
-class Home(Page):
+from cached_properties import Property as property
+
+class Home:
 	def __init__(self):
-		super().__init__(Utils.make_link())
+		self.link = Utils.make_link()
 		for name, value in self.scrape_home_page().items():
 			setattr(self, name, value)
 
@@ -21,3 +22,7 @@ class Home(Page):
 		return {Translator.translate(item.div.strong.text.strip()):self.shows_container_scrape(item)
 			for item in big_con.find_all(class_='mbox')
 				if item.a}
+
+	@property(general=True, timeout=86400)
+	def soup(self):
+		return Utils.page_downloader(self.link)
