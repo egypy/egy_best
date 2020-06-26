@@ -16,7 +16,6 @@ class Utils:
 		""" download the page and return BeautifulSoup instance """
 		if not link.startswith('http'):
 			link = f'{Settings.mainsite().strip("/")}{link}'
-		print(f'Getting : {link}')
 		while True:
 			r = requests.get(link, headers=Settings.headers,
 				proxies=Settings.proxy, **kwargs)

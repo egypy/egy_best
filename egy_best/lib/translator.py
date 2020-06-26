@@ -52,7 +52,6 @@ class Translator:
 					return name
 		if elem in cls.data:
 			return cls.data[elem]
-		print(elem)
 		raise TranslateNotFound
 
 # TOOO: add online translate
