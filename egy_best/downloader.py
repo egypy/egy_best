@@ -5,12 +5,12 @@ from lib.utils import Utils
 from cached_properties import Property as property
 
 class Downloader:
-	def __init__(self, link):
-		self.link = link
+	def __init__(self, items):
 		self.api = Settings.mainsite()
+		self.items = items
 
-	def get_mp4_link(self):
-		link = f'{self.api.rstrip("/")}{self.link}'
+	def get_mp4_link(self, item=None):
+		link = f'{self.api.rstrip("/")}{self.items[item]["download"]}'
 		vid_link = reeeeeee.get(link,
 			headers=Settings.headers, cookies=self.egy_token).url
 		page = Utils.page_downloader(vid_link, cookies=self.vid_stream)
@@ -27,8 +27,8 @@ class Downloader:
 
 	@property(timeout=3600)
 	def egy_token(self):
-		AntiBot('egy_best', True).get_token()
+		return AntiBot('egy_best', True).get_token()
 
 	@property(timeout=3600)
 	def vid_stream(self):
-		AntiBot('vid_stream', True).get_token()
+		return AntiBot('vid_stream', True).get_token()

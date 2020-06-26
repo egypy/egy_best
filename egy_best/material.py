@@ -94,11 +94,11 @@ class Material(Page):
 	def get_source_link(self, quality=None):
 		""" get the mp4 download link """
 		if str(quality).isnumeric():
-			self.download_info[quality]['download'] = Downloader(self.download_info[quality]['download']).get_mp4_link()
+			self.download_info[quality]['download'] = self.downloader_handler.get_mp4_link(quality)
 			return self.download_info
 		for quality in self.download_info:
 			if '/api' in self.download_info[quality]['download']:
-				self.download_info[quality]['download'] = Downloader(self.download_info[quality]['download']).get_mp4_link()
+				self.download_info[quality]['download'] = self.downloader_handler.get_mp4_link(quality)
 		return self.download_info
 
 	def get_thriller(self):
@@ -115,3 +115,7 @@ class Material(Page):
 		if self.soup.find(class_='cpnt'):
 			return self.soup.find(class_='cpnt').text
 		return 'Not rated'
+
+	@property
+	def downloader_handler(self):
+		return Downloader(self.download_info)
