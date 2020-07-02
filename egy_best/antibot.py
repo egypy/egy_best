@@ -1,18 +1,18 @@
 import time
 import pickle
 import requests
-from lib.utils import Utils
-from lib.settings import Settings
+from egy_best.lib.utils import Utils
+from egy_best.lib.settings import Settings
 from threading import Thread
 from selenium import webdriver
-# from webdriver_manager.chrome import ChromeDriverManager
+from cached_properties import Property as property
 # todo clean up the code
 # better class and tests
 
-
+parameters = Settings()
 class AntiBot:
-	database = 'lib/database/'
-	egy_site = Settings.mainsite()
+	database = f'{parameters.path}/database/'
+	egy_site = parameters.mainsite()
 
 	data = {
 		'egy_best': {
@@ -42,9 +42,8 @@ class AntiBot:
 			t1.start()
 
 	def init_browser(self):
-		self.browser =  webdriver.Chrome(
-			options=Settings.options)
-		return self.browser
+		return webdriver.Chrome(f'{parameters.path}/chromedriver.exe',
+			options=parameters.options)
 
 	def bypass(self):
 		elem = self.content['bypass']
@@ -103,7 +102,7 @@ class AntiBot:
 		if vid:
 			return 'https://vidstream.online/f/mgnA4lAq7g/'
 
-		netloc = Settings.mainsite()
+		netloc = parameters.mainsite()
 		r = Utils.page_downloader(f'{netloc}movie/pink-floyd-the-wall-1982/')
 		link = r.find(class_='nop btn g dl _open_window')['data-url']
 		return f"{netloc.strip('/')}{link}"
@@ -111,12 +110,16 @@ class AntiBot:
 	def test_token(self, cookies):
 		if 'egybest' in self.content['site']:
 			test = self._get_test()
-			r = requests.get(test, headers=Settings.headers, cookies=cookies)
+			r = requests.get(test, headers=parameters.headers, cookies=cookies)
 			if 'vidstream' in r.url:
 				return r.url
 			return False
 		test = self._get_test(True)
-		r = requests.get(test, headers=Settings.headers, cookies=cookies)
+		r = requests.get(test, headers=parameters.headers, cookies=cookies)
 		if '.mp4" class="bigbutton"' in r.text:
 			return True
 		return False
+
+	@property
+	def browser(self):
+		return self.init_browser()
