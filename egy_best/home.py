@@ -1,5 +1,5 @@
-from lib.utils import Utils
-from lib.translator import Translator
+from egy_best.lib.utils import Utils
+from egy_best.lib.translator import Translator
 from cached_properties import Property as property
 
 class Home:

@@ -1,9 +1,10 @@
 import re
-from serie import Serie
-from season import Season
-from material import Material
-from lib.utils import Utils
+from egy_best.serie import Serie
+from egy_best.season import Season
+from egy_best.material import Material
+from egy_best.lib.utils import Utils
 from cached_properties import Property as property
+
 class Episode(Material):
 	def __init__(self, link, **kwargs):
 		self.link = link
@@ -30,7 +31,7 @@ class Episode(Material):
 
 	@property
 	def episode_number(self):
-		return self.find_order('ep'))
+		return self.find_order('ep')
 
 	@property
 	def soup(self):
@@ -38,4 +39,4 @@ class Episode(Material):
 
 	@property
 	def year(self):
-	return self.season.serie.year
+		return self.season.serie.year

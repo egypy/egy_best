@@ -1,5 +1,5 @@
-from material import Material
-from lib.utils import Utils
+from egy_best.material import Material
+from egy_best.lib.utils import Utils
 from cached_properties import Property as property
 
 class Serie(Material):

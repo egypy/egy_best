@@ -1,6 +1,6 @@
 import re
-from serie import Serie
-from lib.utils import Utils
+from egy_best.serie import Serie
+from egy_best.lib.utils import Utils
 from cached_properties import Property as property
 
 class Season(Serie):

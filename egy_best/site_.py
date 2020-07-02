@@ -1,11 +1,11 @@
 import requests
-from lib.settings import Settings
-from lib.utils import Utils
+from egy_best.lib.settings import Settings
+from egy_best.lib.utils import Utils
 from bs4 import BeautifulSoup
 
 class Site:
 	""" a class that hold site functionality : search, login ..."""
-	my_site = Settings.mainsite()
+	my_site = Settings().mainsite()
 	search_api = f'{my_site}autoComplete.php'
 	filter_api = '%s{material}/{options}?output_format=json&page={page}' % my_site
 

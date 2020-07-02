@@ -1,6 +1,6 @@
 from cached_properties import Property as property
-from lib.utils import Utils
-from lib.settings import Settings
+from egy_best.lib.utils import Utils
+from egy_best.lib.settings import Settings
 
 class Actor:
 	def __init__(self, link, **kwargs):
@@ -49,6 +49,6 @@ class Actor:
 
 	@property
 	def name(self):
-		if Settings.AUTO_INIT:
+		if Settings().AUTO_INIT:
 			return self.scrape_image()['name']
 		return ' '.join(Utils.url_to_name(self.link)).title()

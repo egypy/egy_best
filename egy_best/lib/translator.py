@@ -1,4 +1,4 @@
-from .exceptions import TranslateNotFound
+from egy_best.lib.exceptions import TranslateNotFound
 
 class Translator:
 	""" simple translate class to convert a word from a lang to en """

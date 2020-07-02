@@ -1,5 +1,5 @@
-from lib.utils import Utils
-from lib.settings import Settings
+from egy_best.lib.utils import Utils
+from egy_best.lib.settings import Settings
 from cached_properties import Property as property
 
 class Page:
@@ -7,7 +7,7 @@ class Page:
 	def __init__(self, link, **kwargs):
 		self.link = link
 		self.page_type = Utils.page_type(link)
-		self.access = Settings.AUTO_INIT
+		self.access = Settings().AUTO_INIT
 
 		if not self.access:
 			if 'title' in kwargs:
@@ -21,8 +21,6 @@ class Page:
 			for name, value in kwargs.items():
 				if name != 'title':
 					setattr(self, name, value)
-
-
 
 	@property
 	def soup(self):

@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from .settings import Settings
+from egy_best.lib.settings import Settings
 # i had to sell my soul to devil due relative imports
+parameters = Settings()
+
 class Utils:
 	""" class that hold some useful utils methods"""
 	classes = dict(
@@ -15,10 +17,10 @@ class Utils:
 	def page_downloader(cls, link, **kwargs):
 		""" download the page and return BeautifulSoup instance """
 		if not link.startswith('http'):
-			link = f'{Settings.mainsite().strip("/")}{link}'
+			link = f'{parameters.mainsite().strip("/")}{link}'
 		while True:
-			r = requests.get(link, headers=Settings.headers,
-				proxies=Settings.proxy, **kwargs)
+			r = requests.get(link, headers=parameters.headers,
+				proxies=parameters.proxy, **kwargs)
 			if r.status_code == 200:
 				return BeautifulSoup(r.text, 'lxml')
 			cls.page_downloader(link)
@@ -36,7 +38,7 @@ class Utils:
 		""" import classes to avoid circular import Exception """
 		tampl = '{}("{}", **kwargs)'
 		rel = cls.classes[name]
-		return getattr(__import__(rel.lower()), rel)(link, **kwargs)
+		return getattr(__import__(f'egy_best.{rel.lower()}'), rel)(link, **kwargs)
 
 	@classmethod
 	def pickup_class(cls, link, **kwargs):
@@ -45,10 +47,10 @@ class Utils:
 		type = Utils.page_type(link)
 		if type in cls.classes:
 			return cls.magic_import(type, link, **kwargs)
-		return cls.magic_import('page', link, **kwargs)
+		return cls.magic_import('.page', link, **kwargs)
 
 	@classmethod
-	def make_link(cls, domain=Settings.mainsite(), link=None):
+	def make_link(cls, domain=parameters.mainsite(), link=None):
 		""" fix errors on the link and append main netloc """
 		tampl = '{domain}{path}?ref=home{q}'
 		r = requests.utils.urlparse(link if link else '')
