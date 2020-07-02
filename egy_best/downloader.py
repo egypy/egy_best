@@ -1,29 +1,31 @@
 import requests as reeeeeee # reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-from antibot import AntiBot
-from lib.settings import Settings
-from lib.utils import Utils
+from egy_best.antibot import AntiBot
+from egy_best.lib.settings import Settings
+from egy_best.lib.utils import Utils
 from cached_properties import Property as property
+parameters = Settings()
 
 class Downloader:
 	def __init__(self, items):
-		self.api = Settings.mainsite()
+		self.api = parameters.mainsite()
 		self.items = items
 
 	def get_mp4_link(self, item=None):
 		link = f'{self.api.rstrip("/")}{self.items[item]["download"]}'
 		vid_link = reeeeeee.get(link,
-			headers=Settings.headers, cookies=self.egy_token).url
+			headers=parameters.headers, cookies=self.egy_token).url
 		page = Utils.page_downloader(vid_link, cookies=self.vid_stream)
 		return page.find(class_='bigbutton').attrs['href']
 
 	@staticmethod
-	def download_file(cls, source, max=512):
-		r = requests.get(source, headers=Settings.headers, stream=True)
+	def download_file(cls, quality=0, max=512):
+		r = requests.get(self.get_mp4_link(quality)['download'], stream=True)
 		content = bytes()
 		while True:
 			if r:
-				yield r.raw.read(max)
+				content += r.raw.read(max)
 			break
+		return content
 
 	@property(timeout=3600)
 	def egy_token(self):
