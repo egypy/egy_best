@@ -1,4 +1,6 @@
 A1 reverse WIuqgE() and get ride of headless browser
+B1 add docstrings and unittests
+B2 improve settings class and antibot
 C1 Test: test search, movie, actor, serie, episode classes
 C2 remove unused methods
 C3 async in get_source_link
