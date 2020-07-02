@@ -1,8 +1,8 @@
-from page import Page
-from actor import Actor
-from downloader import Downloader
-from lib.translator import Translator
-from lib.utils import Utils
+from egy_best.page import Page
+from egy_best.actor import Actor
+from egy_best.downloader import Downloader
+from egy_best.lib.translator import Translator
+from egy_best.lib.utils import Utils
 from cached_properties import Property as property
 
 class Material(Page):
@@ -95,7 +95,7 @@ class Material(Page):
 		""" get the mp4 download link """
 		if str(quality).isnumeric():
 			self.download_info[quality]['download'] = self.downloader_handler.get_mp4_link(quality)
-			return self.download_info
+			return self.download_info[quality]
 		for quality in self.download_info:
 			if '/api' in self.download_info[quality]['download']:
 				self.download_info[quality]['download'] = self.downloader_handler.get_mp4_link(quality)
