@@ -4,3 +4,5 @@ from egy_best.home import Home
 from egy_best.movie import Movie
 from egy_best.season import Season
 from egy_best.serie import Serie
+from egy_best.page import Page
+from egy_best.site import Site
