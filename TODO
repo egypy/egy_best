@@ -1,7 +1,7 @@
 A1 reverse WIuqgE() and get ride of headless browser
 B1 add docstrings and unittests
 B2 improve settings class and antibot
+B4 some attr are not seted when AUTO_INIT False
 C1 Test: test search, movie, actor, serie, episode classes
 C2 remove unused methods
 C3 async in get_source_link
-C4 make settings json format
