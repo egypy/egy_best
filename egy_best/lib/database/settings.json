@@ -1,6 +1,6 @@
 {
     "script_settings":{
-        "auto_init":false,
+        "auto_init":true,
         "detect_netloc":false,
         "classes":{
             "movie":"Movie",
