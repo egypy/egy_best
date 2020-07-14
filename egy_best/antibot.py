@@ -1,3 +1,4 @@
+import os
 import time
 import pickle
 import requests
@@ -8,6 +9,8 @@ from selenium import webdriver
 from cached_properties import Property as property
 
 para = Settings()
+GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
 
 class AntiBot:
@@ -22,7 +25,11 @@ class AntiBot:
 
     @property
     def browser(self):
-        return webdriver.Chrome(options=para.options)
+        para.options.add_argument('--disable-gpu')
+        para.options.add_argument('--no-sandbox')
+        para.options.binary_location = GOOGLE_CHROME_PATH
+        return webdriver.Chrome(execution_path=CHROMEDRIVER_PATH,
+                                options=para.options)
 
     def get_cookies(self):
         self._bypass()
@@ -52,7 +59,7 @@ class AntiBot:
         elif self.elem['test_subject'] == 'content':
             return self.elem['test_success'] in r.text
 
-    @property
+    @ property
     def test_path(self):
         page = '{}{}'.format(self.elem['domain'], self.elem['test_path'])
         if 'vidstream' in self.elem['domain']:
@@ -61,6 +68,6 @@ class AntiBot:
             class_='nop btn g dl _open_window')['data-url']
         return f'{self.elem["domain"]}{link}'
 
-    @property(timeout=3600)
+    @ property(timeout=3600)
     def token(self):
         return self.get_token()
