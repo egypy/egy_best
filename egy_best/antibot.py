@@ -7,7 +7,6 @@ from egy_best.lib.settings import Settings
 from threading import Thread
 from selenium import webdriver
 from cached_properties import Property as property
-from webdriver_manager.chrome import ChromeDriverManager
 
 para = Settings()
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
@@ -29,8 +28,7 @@ class AntiBot:
         para.options.add_argument('--disable-gpu')
         para.options.add_argument('--no-sandbox')
         para.options.binary_location = GOOGLE_CHROME_PATH
-        return webdriver.Chrome(ChromeDriverManager().install(),
-                                options=para.options)
+        return webdriver.Chrome(CHROMEDRIVER_PATH, options=para.options)
 
     def get_cookies(self):
         self._bypass()
