@@ -6,7 +6,6 @@ from egy_best.lib.settings import Settings
 from threading import Thread
 from selenium import webdriver
 from cached_properties import Property as property
-from webdriver_manager.chrome import ChromeDriverManager
 
 para = Settings()
 
@@ -23,8 +22,7 @@ class AntiBot:
 
     @property
     def browser(self):
-        return webdriver.Chrome(ChromeDriverManager().install(),
-                                options=para.options)
+        return webdriver.Chrome(options=para.options)
 
     def get_cookies(self):
         self._bypass()
