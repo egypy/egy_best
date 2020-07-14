@@ -9,7 +9,7 @@ class Site:
     my_site = Settings().domain
     search_api = f'{my_site}/autoComplete.php'
     filter_api = '%s/{material}/{options}?output_format=json&page={page}' % my_site
-
+    supported = ['tv', 'movies', 'masrahiyat']
     @classmethod
     def search(cls, query: str, access=True, **kwargs) -> list or None:
         """ a class to search inside the site : movies, series ...
@@ -48,9 +48,8 @@ class Site:
         3) options are optinal you don't have to pass all of them
         """
         material = material.lower()
-        supported = ['tv', 'movies', 'masrahiyat']
-        if material not in supported:
-            print(f'Supported filters are {", ".join(supported)}')
+        if material not in cls.supported:
+            print(f'Supported filters are {", ".join(cls.supported)}')
             return None
         text = ''
         for page in range(1, max+1):
