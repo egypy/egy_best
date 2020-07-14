@@ -15,12 +15,14 @@ from egy_best import (
 app = FastAPI()
 session = Site()
 
+
 @app.get("/")
 def read_root():
     return {"error": "NO!"}
 
+
 @app.get("/search")
-def search(q:str):
+def search(q: str):
     resutls = session.search(q)
     content = dict()
     for i, r in enumerate(resutls):
@@ -34,6 +36,7 @@ def search(q:str):
             info['downloadinfo'] = f'/downloadinfo?url={r.link}'
         content.update({i: info})
     return content
+
 
 @app.get("/filter/{material}")
 def filter(material, q):
@@ -53,29 +56,34 @@ def filter(material, q):
                 content.update({i: info})
             return content
     return {'error': 'Nothing Has Been Found'}
-    
+
 
 @app.get("/seasons")
 def seasons(url: str):
     return {n:
-        {'title':s.title, 'url': s.link, 'episodes': f'/episodes?url={s.link}', 'thumbnail': s.thumbnail} 
-        for n, s in enumerate(Serie(url).seasons)}
+            {'title': s.title, 'url': s.link, 'episodes': f'/episodes?url={s.link}', 'thumbnail': s.thumbnail}
+            for n, s in enumerate(Serie(url).seasons)}
+
 
 @app.get("/episodes")
 def episodes(url: str):
-    return {n: 
-    {
-        'url': s.link,
-        'title':s.title,
-        'thumbnail': s.thumbnail,
-        'downloadinfo': f'/downloadinfo?url={s.link}'
-        } for n, s in enumerate(Season(url).episodes)}
+    return {n:
+            {
+                'url': s.link,
+                'title': s.title,
+                'thumbnail': s.thumbnail,
+                'downloadinfo': f'/downloadinfo?url={s.link}'
+            } for n, s in enumerate(Season(url).episodes)}
+
 
 @app.get('/downloadinfo')
 def download(url: str):
-    resutls = {'error': 'Bad Usage'}
     if 'episode' in url:
-        resutls = Episode(url).get_source_link()
+        c = Episode
     elif 'movie' in url:
-        resutls = Movie(url).get_source_link()
-    return resutls
+        c = Movie
+    ob = c(url)
+    rr = ob.get_source_link()
+    if rr:
+        return rr
+    return {'error': 'Bad Usage'}
