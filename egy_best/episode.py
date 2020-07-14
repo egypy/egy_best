@@ -12,7 +12,7 @@ class Episode(Material):
         super().__init__(link, **kwargs)
 
     def __repr__(self):
-        return f'{self.title} Episode number : {self.episode_number}'
+        return f'Episode number : {self.episode_number}'
 
     def find_order(self, pram):
         return re.search(f'{pram}-(.*)/', self.link).group(1)
