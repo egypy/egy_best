@@ -25,9 +25,9 @@ class AntiBot:
 
     @property
     def browser(self):
-        para.options.add_argument('--disable-gpu')
-        para.options.add_argument('--no-sandbox')
-        para.options.binary_location = GOOGLE_CHROME_PATH
+        # para.options.add_argument('--disable-gpu')
+        # para.options.add_argument('--no-sandbox')
+        #para.options.binary_location = GOOGLE_CHROME_PATH
         return webdriver.Chrome(CHROMEDRIVER_PATH,
                                 options=para.options)
 
