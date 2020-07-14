@@ -11,6 +11,7 @@ from cached_properties import Property as property
 para = Settings()
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+chrome_bin = os.environ.get('GOOGLE_CHROME_SHIM', None)
 
 
 class AntiBot:
@@ -27,7 +28,7 @@ class AntiBot:
     def browser(self):
         para.options.add_argument('--disable-gpu')
         para.options.add_argument('--no-sandbox')
-        para.options.binary_location = GOOGLE_CHROME_PATH
+        para.options.binary_location = chrome_bin
         return webdriver.Chrome(CHROMEDRIVER_PATH, options=para.options)
 
     def get_cookies(self):
