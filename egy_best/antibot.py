@@ -28,7 +28,7 @@ class AntiBot:
         para.options.add_argument('--disable-gpu')
         para.options.add_argument('--no-sandbox')
         para.options.binary_location = GOOGLE_CHROME_PATH
-        return webdriver.Chrome(execution_path=CHROMEDRIVER_PATH,
+        return webdriver.Chrome(CHROMEDRIVER_PATH,
                                 options=para.options)
 
     def get_cookies(self):
