@@ -12,7 +12,7 @@ what this API can do for you?
 * a lot of features..
 
 ## Todo
-I will try to maintain this respiratory and update or add new things to it you are welcome to contribute :relaxed:
+This repo is currently unmaintained, since the css selectors has changed since the time this code was written any contributions are welcome
 
 Here some of the following features:
  
