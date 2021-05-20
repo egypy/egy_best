@@ -3,7 +3,7 @@ beautifulsoup4==4.9.1
 bs4==0.0.1
 cached-properties==0.7.1
 fastapi==0.59.0
-lxml==4.5.1
+lxml==4.6.3
 requests==2.23.0
 rich==3.2.0
 selenium==3.141.0
